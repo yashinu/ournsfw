@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="https://git.neon.moe/neon/blog/raw/branch/master/public/favicon.ico" type="image/x-icon" />
+  <title>Yashinu | NSFW</title>
+</head>
+
+<body
+  style="background-image: url('https://cdn.discordapp.com/attachments/804758670712897537/849737824307642388/1620948703426_1.png'); background-repeat: no-repeat; background-size: cover;">
+  <div id="app">
+    <div class="center">
+      <div>
+        <div class="col">
+          <button class="button" v-for="tip in categories" @click="sendNSFW(tip)">{{ tip }}</button>
+        </div>
+      </div>
+      <div style="padding-top: 1rem;">
+        <input style="background-color: rgb(107, 114, 128);" placeholder="Discord Webhook URL" type="url" v-model="wurl" required></input>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  <script>
+    new Vue({
+      el: "#app",
+      data: {
+        wurl: "Discord Webhook URL",
+        categories: ["hass", "hmidriff", "pgif", "4k", "hentai", "holo", "hneko", "neko", "hkitsune", "kemonomimi", "anal", "hanal", "gonewild", "kanna", "ass", "pussy", "thigh", "hthigh", "gah", "coffee", "food", "paizuri", "tentacle", "boobs", "hboobs"/*, "yaoi"*/]
+      },
+      methods: {
+        async sendNSFW(category) {
+          let wURL = this.wurl;
+          let urlRegEx = /^https?:\/\/(canary\.)?(discordapp|discord)\.com\/api\/webhooks\/([^\/]+)\/([^\/]+)$/;
+          if (!wURL || !wURL.length || !urlRegEx.test(wURL)) return alert("Please specify a valid webhook URL!");
+          let response = await fetch(`https://nekobot.xyz/api/image?type=${category}`).then((response) => response.json());
+          if (response) {
+            await fetch(wURL, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                embeds: [{
+                  color: 0x2F3136,
+                  image: {
+                    url: response.message
+                  }
+                }]
+              })
+            });
+          };
+        }
+      }
+    });
+  </script>
+
+  <style>
+    * {
+      font-family: "Comic Sans MS";
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      outline: 0;
+    }
+
+    html,
+    body,
+    #app {
+      width: 100%;
+      height: 100%;
+    }
+
+    .button {
+      border: 0;
+      border-radius: 9999px;
+      font-size: 16px;
+      height: 3rem;
+      width: 6rem;
+      background-color: rgb(107, 114, 128);
+    }
+
+    .button:active {
+      background-color: rgb(209, 213, 219);
+    }
+
+    .center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    .col {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      max-width: 100%;
+      gap: 0.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .center {
+        align-items: flex-start;
+        padding-left: 16px;
+      }
+
+      .col {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+
+      .button {
+        width: 7rem;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .button {
+        width: 8rem;
+      }
+    }
+  </style>
+</body>
+
+</html>
