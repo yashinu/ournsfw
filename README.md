@@ -3,4 +3,4 @@ Our NSFW
 
 Using Nekobot NSFW API with Discord Webhook.
 
-![Usage](https://yashinu.is-inside.me/JloTgC3z.gif)
+![Usage](https://yashinu.is-inside.me/qJNohbv0.gif)
